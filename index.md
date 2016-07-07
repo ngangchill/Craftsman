@@ -22,15 +22,25 @@ Built on top of great technology.
       <p>Built with <a href="https://github.com/symfony/console" target="_blank">Symfony Console component</a></p>
     </div>
     <div class="col-sm-4">
-      <i class="fa fa-terminal fa-3x fa-fw"></i>
-      <h4>Interactive</h4>
-      <p>Every command also includes a help screen which describes available options.</p>
-    </div>
+      <i class="fa fa-bolt fa-3x fa-fw"></i>
+      <h4>Generators</h4>
+      <p>Generate boilerplate code for application.</p>
+    </div>     
     <div class="col-sm-4">
       <i class="fa fa-database fa-3x fa-fw"></i>
       <h4>Modular migrations</h4>
       <p>Manage your database scheme's evolution through independent versions.</p>
     </div>
+    <div class="col-sm-4">
+      <i class="fa fa-leaf fa-3x fa-fw"></i>
+      <h4>Seeding</h4>
+      <p>Easily fill your database with data after it's created.</p>
+    </div>    
+    <div class="col-sm-4">
+      <i class="fa fa-terminal fa-3x fa-fw"></i>
+      <h4>Interactive</h4>
+      <p>Every command also includes a help screen which describes available options.</p>
+    </div>        
 </div>
 
 ## Demo
@@ -94,7 +104,7 @@ Migration schemes are simple files that hold the commands to apply and remove ch
 Each Migration is run in numeric order forward or backwards depending on the method taken. Two numbering styles are available:
 
 * **Sequential**: each migration is numbered in sequence, starting with 001. Each number must be three digits, and there must not be any gaps in the sequence. (This was the numbering scheme prior to CodeIgniter 3.0.)
-* **Timestamp**: each migration is numbered using the timestamp when the migration was created, in 'YYYYMMDDHHIISS' format (e.g. 20121031100537). This helps prevent numbering conflicts when working in a team environment, and is the preferred scheme in CodeIgniter 3.0 and later.
+* **Timestamp**: each migration is numbered using the timestamp when the migration was created, in `YYYYMMDDHHIISS` format (e.g. 20121031100537). This helps prevent numbering conflicts when working in a team environment, and is the preferred scheme in CodeIgniter 3.0 and later.
 
 By default Craftsman uses the sequential style but it can be forced to change with the `--timestamp` argument used with every migration command listed bellow.
 
@@ -106,19 +116,16 @@ You can display the current migration information with the comand:
 
 Output:
 
-{% highlight Bash %}
- ---------------- --------------------------------------------------------------- 
-  Migration        Value                                                          
- ---------------- --------------------------------------------------------------- 
-  Name             ci_system                                                      
-  Actual version   1                                                              
-  File version     1                                                
-  Path             /path/to/codeigniter/application/migrations/  
- ---------------- --------------------------------------------------------------- 
+    ---------------- --------------------------------------------------------------- 
+     Migration        Value                                                          
+    ---------------- --------------------------------------------------------------- 
+     Name             ci_system                                                      
+     Actual version   1                                                              
+     File version     1                                                
+     Path             /path/to/application/migrations/  
+    ---------------- ---------------------------------------------------------------    
 
- [OK] Database is up-to-date.
-
-{% endhighlight %}
+    [OK] Database is up-to-date.
 
 Where:
 
@@ -129,20 +136,16 @@ Where:
 
 Below the information table there is a legend witch indicates the action to take. If a database update is available, the legend displays the following message:
 
-{% highlight Bash %}
- ---------------- --------------------------------------------------------------- 
-  Migration        Value                                                          
- ---------------- --------------------------------------------------------------- 
-  Name             ci_system                                                      
-  Actual version   0                                                              
-  File version     1                                                
-  Path             /path/to/codeigniter/application/migrations/  
- ---------------- --------------------------------------------------------------- 
+    ---------------- --------------------------------------------------------------- 
+     Migration        Value                                                          
+    ---------------- --------------------------------------------------------------- 
+     Name             ci_system                                                      
+     Actual version   0                                                              
+     File version     1                                                
+     Path             /path/to/application/migrations/  
+    ---------------- ---------------------------------------------------------------    
 
- ! [NOTE] The Database is not up-to-date with the latest changes, run:'migration:latest' to update them.
-
-{% endhighlight %}
-
+    ! [NOTE] The Database is not up-to-date with the latest changes, run:'migration:latest' to update them.
 
 Each migration command shows relevant information to perform some action and it asks a Yes/No question to the user before perform some action.
 
@@ -178,50 +181,50 @@ Allows you to quickly roll back and forth through the history of the migration s
 
 	php path/to/craftsman migration:refresh
 
-All migration versions of modules are stored apart from each other, so you can control the versions of every module and never interfering with each other.
 
-#### Modular Migrations
+### Seeders
 
-If you're familiar with the [Codeigniter Migration Class](https://codeigniter.com/user_guide/libraries/migration.html), it is imposible to maintain separated migration version files in your application, you need to merge these files in one directory and fix the `migration file name`.
+Craftsman comes with a simple method of seeding your database with test data using seed classes. All seed classes are stored by default in your `path/to/application/seeders` folder. Seed classes may have any name you wish, but probably should follow the [CodeIgniter Style Guide](https://codeigniter.com/userguide3/general/styleguide.html).
 
-With Craftsman You can manage your database scheme's evolution through independent versions of your components.
+To generate a seeder:
 
-We will assume the following directory stucture:
+    php path/to/craftsman generator:seeder <name>
 
-    +- APPPATH/
-    | +- migrations/
-    | | +- 001_add_blog.php
-    | | +- 002_add_posts.php
+A seeder class only contains the `run()` method by default. This method is called when the `db:seed` command is executed. Within the run method, you may insert data into your database however you wish. You may use the [Query Builder Class
+](https://codeigniter.com/user_guide/query_builder.html) to manually insert data.
 
-And an application library uses a database scheme (like Ion Auth, Community Auth, etc). This migrations reside in:
+**Example**
 
-    +- APPPATH
-    | +- libraries/
-    | | +- fooLib/
-    | | | +- migrations
-    | | | | +- 001_add_session.php
-    | | | | +- 002_add_other_stuff.php
+Add a database insert statement to the run method:
 
-Run the Migration command with the `--path` option:
+{% highlight PHP startinline %}
 
-    php vendor/bin/craftsman migration:latest --path="application/libraries/fooLib"
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-And that's all, your migrations are now independent. 
+use Craftsman\Classes\Seeder;
 
-In your database you can see that every component have a version assigned:
+class Foo extends Seeder implements \Craftsman\Interfaces\Seeder
+{
+    private $table = 'ci_foo';
 
-    mysql> SELECT * FROM ci_migrations; 
+    public function run()
+    {   
+        $this->db->insert($this->table, [
+            'title' => faker_numerify('Title ###'),
+            'name' => faker_numerify('Name ###'),
+            'date' => faker_date('Y-m-d H:i:s', 'now')
+        ]);
+    }
+}
 
-    +---------------+---------+
-    | module        | version |
-    +---------------+---------+
-    | ci_system     |       2 |
-    | foolib        |       2 |
-    +---------------+---------+
+/* End of file Foo.php */
+/* Location: /path/to/application/seeders/Foo.php */ 
+?>{% endhighlight %} 
 
-Also you can change the component name stored in the database with the `--name` option:
 
-    php vendor/bin/craftsman migration:latest --name="foo" --path="application/libraries/fooLib"
+One you have written your seeder class, you may use the command`:
+
+    php path/to/craftsman db:seed <name>
 
 ### Generators
 
@@ -229,8 +232,7 @@ Craftsman provides a variety of generators to speed up your development process.
 
 Every Generator Command comes with a `--path` option to control where the generated file will be placed overwriting the default path.
 
-    php path/to/craftsman generator:<command> <name> --path="path/to/new"
-
+    php path/to/craftsman generator:<command> <args> --path="path/to/new"
 
 #### Controller
 
@@ -319,7 +321,7 @@ class Foo extends CI_Controller
 }
 
 /* End of file Foo.php */
-/* Location: /path/to/codeigniter/application/controllers/Foo.php */  
+/* Location: /path/to/application/controllers/Foo.php */  
 ?>{% endhighlight %} 
 
 #### Model
@@ -343,7 +345,7 @@ class Foo_model extends CI_Model
 }
 
 /* End of file Foo_model.php */
-/* Location: /path/to/codeigniter/application/models/Foo_model.php */
+/* Location: /path/to/application/models/Foo_model.php */
 ?>
 {% endhighlight %}
 
@@ -422,10 +424,57 @@ class Migration_create_users extends CI_Migration {
 }
 
 /* End of file 001_create_users.php.php */
-/* Location: path/to/codeigniter/application/migrations/001_create_users.php */
+/* Location: path/to/application/migrations/001_create_users.php */
 ?>{% endhighlight %}
 
 Now it's your turn to give the finishing touches before running this scheme. Check the [Database Forge documentation](https://codeigniter.com/user_guide/database/forge.html) for more information about CodeIgniter Migrations.
+
+## Advanced
+
+---
+
+### Modular Migrations
+
+If you're familiar with the [Codeigniter Migration Class](https://codeigniter.com/user_guide/libraries/migration.html), it is imposible to maintain separated migration version files in your application, you need to merge these files in one directory and fix the `migration file name`.
+
+With Craftsman You can manage your database scheme's evolution through independent versions of your components.
+
+We will assume the following directory stucture:
+
+    +- APPPATH/
+    | +- migrations/
+    | | +- 001_add_blog.php
+    | | +- 002_add_posts.php
+
+And an application library uses a database scheme (like Ion Auth, Community Auth, etc). This migrations reside in:
+
+    +- APPPATH
+    | +- libraries/
+    | | +- fooLib/
+    | | | +- migrations
+    | | | | +- 001_add_session.php
+    | | | | +- 002_add_other_stuff.php
+
+Run the Migration command with the `--path` option:
+
+    php vendor/bin/craftsman migration:latest --path="application/libraries/fooLib"
+
+And that's all, your migrations are now independent. 
+
+In your database you can see that every component have a version assigned:
+
+    mysql> SELECT * FROM ci_migrations; 
+
+    +---------------+---------+
+    | module        | version |
+    +---------------+---------+
+    | ci_system     |       2 |
+    | foolib        |       2 |
+    +---------------+---------+
+
+Also you can change the component name stored in the database with the `--name` option:
+
+    php vendor/bin/craftsman migration:latest --name="foo" --path="application/libraries/fooLib"
 
 ## Contributions
 
