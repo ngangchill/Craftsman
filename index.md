@@ -24,7 +24,7 @@ Built on top of great technology.
     <div class="col-sm-4">
       <i class="fa fa-bolt fa-3x fa-fw"></i>
       <h4>Generators</h4>
-      <p>Generate boilerplate code for application.</p>
+      <p>Generate boilerplate code for a rapid application development.</p>
     </div>     
     <div class="col-sm-4">
       <i class="fa fa-database fa-3x fa-fw"></i>
@@ -34,7 +34,7 @@ Built on top of great technology.
     <div class="col-sm-4">
       <i class="fa fa-leaf fa-3x fa-fw"></i>
       <h4>Seeding</h4>
-      <p>Easily fill your database with data after it's created.</p>
+      <p>Easily fill your database with test data after it's created.</p>
     </div>    
     <div class="col-sm-4">
       <i class="fa fa-terminal fa-3x fa-fw"></i>
@@ -46,6 +46,8 @@ Built on top of great technology.
 ## Demo
 
 ---
+
+### Migrations
 
 <div class="embed-responsive embed-responsive-16by9">
 <div class="embed-responsive-item"><script type="text/javascript" src="https://asciinema.org/a/45166.js" id="asciicast-45166" async></script></div>
@@ -62,8 +64,6 @@ Before run the composer install command, add the bin-dir config path inside your
     "bin-dir": "bin"
 }
 {% endhighlight %}
-
-Also if you're going to use the [Migration Commands](#migrations) you should configure your `application/config/database.php` settings needed to access to your database.
 
 #### Composer
 
@@ -98,6 +98,8 @@ Every command includes a help screen which displays the command's available argu
 ### Migrations
 
 Migration schemes are simple files that hold the commands to apply and remove changes to your database. It allows you to easily keep track of changes made in your app. They may create/modify tables or fields, etc. But they are not limited to just changing the schema. You could use them to fix bad data in the database or populate new fields.
+
+Note: if you're going to use `Migration Commands` you should configure your `application/config/database.php` settings needed to access to your database.
 
 #### File names
 
@@ -210,9 +212,9 @@ class Foo extends Seeder implements \Craftsman\Interfaces\Seeder
     public function run()
     {   
         $this->db->insert($this->table, [
-            'title' => faker_numerify('Title ###'),
-            'name' => faker_numerify('Name ###'),
-            'date' => faker_date('Y-m-d H:i:s', 'now')
+            'title' => 'Title 1',
+            'name'  => 'Name 1',
+            'date'  => date('Y-m-d H:i:s')
         ]);
     }
 }
