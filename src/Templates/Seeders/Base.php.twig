@@ -2,7 +2,7 @@
 
 use Craftsman\Classes\Seeder;
 
-class {{NAME}} extends Seeder implements \Craftsman\Interfaces\Seeder
+class {{NAME}} extends Seeder
 {
 	private $table = 'ci_{{ COLLECTION |lower }}';
 
@@ -10,7 +10,7 @@ class {{NAME}} extends Seeder implements \Craftsman\Interfaces\Seeder
 	{
 		$this->db->truncate($this->table);
 		
-		$this->db->insert_batch($this->table, [
+		$this->db->insert($this->table, [
 			# your data here
 		]);
 	}
