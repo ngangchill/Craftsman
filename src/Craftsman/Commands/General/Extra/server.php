@@ -18,6 +18,13 @@ $uri = urldecode(
   parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
 );
 
+// HHVM environment doesn't use getcwd() function properly. 
+// Let's change manually the working directory.
+if (defined('HHVM_VERSION')) 
+{
+	chdir('../../../../../../../../');	
+}
+
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Codeigniter
 // application without having installed a "real" web server software here.
