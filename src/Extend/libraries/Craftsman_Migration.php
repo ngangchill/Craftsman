@@ -26,7 +26,7 @@ class Craftsman_Migration extends CI_Migration
 	protected $_module_name = 'ci_system';
 
 	/**
-	 * Constructor
+	 * Class Constructor
 	 * 
 	 * @param array $config Migration library config arguments.
 	 */
@@ -87,6 +87,16 @@ class Craftsman_Migration extends CI_Migration
 	public function get_module_path()
 	{
 		return $this->_migration_path;
+	}
+
+	/**
+	 * Get migration type
+	 * 
+	 * @return string
+	 */
+	public function get_type()
+	{
+		return $this->_migration_type;
 	}
 
 	/**

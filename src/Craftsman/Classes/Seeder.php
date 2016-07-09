@@ -12,12 +12,30 @@ namespace Craftsman\Classes;
  */
 abstract class Seeder
 {
+	/**
+	 * @var \CI_Controller
+	 */
 	private $CI;
 	
+	/**
+	 * @var \CI_DB
+	 */
 	protected $db;
 	
+	/**
+	 * @var \CI_DB_Forge
+	 */
 	protected $dbforge;
 
+	/**
+	 * Force Extending class to define this method
+	 * @return void
+	 */
+	abstract public function run();	
+
+	/**
+	 * Class Constructor
+	 */
 	public function __construct()
 	{
 		$this->CI =& get_instance();
@@ -29,6 +47,11 @@ abstract class Seeder
 		$this->dbforge = $this->CI->dbforge;
 	}
 
+	/**
+	 * Get CI properties
+	 * @param  string $property Property name
+	 * @return object           CI property (e.g. Model, Library, Config, etc...)
+	 */
 	public function __get($property)
 	{
 		return $this->CI->{$property};

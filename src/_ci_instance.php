@@ -8,8 +8,6 @@
  * @link       https://github.com/davidsosavaldes/Craftsman
  *
  * Based on https://raw.githubusercontent.com/kenjis/codeigniter-ss-twig/master/ci_instance.php
- * 
- * Thanks Kenji!
  */
 
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');

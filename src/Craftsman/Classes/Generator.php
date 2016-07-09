@@ -36,7 +36,8 @@ abstract class Generator extends Command
     }
 
     /**
-     * Configure command arguments and options
+     * Command configuration method.
+     * Configure all the arguments and options.
      */
     protected function configure()
     {

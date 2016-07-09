@@ -11,7 +11,8 @@ use Craftsman\Commands\Migrations\Latest     as Migration_Latest;
 use Craftsman\Commands\Migrations\Rollback   as Migration_Rollback;
 use Craftsman\Commands\Migrations\Reset      as Migration_Reset;
 use Craftsman\Commands\Migrations\Refresh    as Migration_Refresh;
-use Craftsman\Commands\Seeder;
+use Craftsman\Commands\Database\Seeder		 as Database_Seeder;
+use Craftsman\Commands\General\Serve;
 use Symfony\Component\Console\Application;
 
 /**
@@ -27,7 +28,6 @@ use Symfony\Component\Console\Application;
 set_time_limit(0);
 
 define('CRAFTSMANPATH', __DIR__.DIRECTORY_SEPARATOR);
-
 // Create a Codeigniter instance
 $CI = require CRAFTSMANPATH.'src/_ci_instance.php';
 // Add the user database configuration according to main application directory.
@@ -46,10 +46,11 @@ $commands = array(
 	new Migration_Rollback($CI),
 	new Migration_Reset($CI),
 	new Migration_Refresh($CI),
-	new Seeder()
+	new Database_Seeder(),
+	new Serve()
 );
 
-$application = new Application('Craftsman', '3.5.3');
+$application = new Application('Craftsman', '3.5.6');
 // Add the default commands
 foreach ($commands as $key => $command) {
 	$application->add($command);

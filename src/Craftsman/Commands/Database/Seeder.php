@@ -1,5 +1,5 @@
 <?php
-namespace Craftsman\Commands;
+namespace Craftsman\Commands\Database;
 
 use Craftsman\Commands\Base as Command;
 
@@ -20,10 +20,10 @@ use Symfony\Component\Console\Input\InputArgument;
 class Seeder extends Command
 {
     protected $name        = 'db:seed';
-    protected $description = 'Seed database with data';
+    protected $description = 'Seed database with test data';
+
     /**
      * Command configuration method.
-     * 
      * Configure all the arguments and options.
      */
     protected function configure()
@@ -93,7 +93,6 @@ class Seeder extends Command
                 throw new \RuntimeException("{$name} Seeder class does not contain a Seeder::run method");
             }
             
-            $this->text('Execute queries...');
             $case = 'seeding';
             $signal = '++'; 
 

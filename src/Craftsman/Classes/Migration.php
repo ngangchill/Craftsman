@@ -30,6 +30,11 @@ abstract class Migration extends Command
     protected $harmless = FALSE;
 
     /**
+     * @var \CI_Controller
+     */
+    protected $CI;
+
+    /**
      * Constructor
      * 
      * @param Craftsman_Migration $Model
@@ -37,19 +42,19 @@ abstract class Migration extends Command
     public function __construct(\CI_Controller $CI)
     {
         parent::__construct();
+        $this->CI = &$CI;
+
         /**
          * We need to load the special migration settings.
          * 
          * Config file: 
          *  src/Extend/config/migration.php
          */
-        $CI->config->load('migration', TRUE, TRUE);
-        $this->CI = &$CI;
+        $CI->config->load('migration', TRUE, TRUE);        
     }
 
     /**
      * Command configuration method.
-     * 
      * Configure all the arguments and options.
      */
     protected function configure()
@@ -138,10 +143,9 @@ abstract class Migration extends Command
                 $this->getOption('path')
             );
 
-            $params['module_name'] = basename(rtrim($_path, '/'));
+            (($module_name = strtolower(basename($_path))) !== 'application')
+                && $params['module_name'] = $module_name;
         }
-
-        $params['module_name'] = strtolower($params['module_name']);
 
         return $this->migration->set_params($params);
     }

@@ -82,12 +82,3 @@ $config['migration_version'] = 0;
 |
 */
 $config['migration_path'] = 'application/migrations/';
-
-/*
-|--------------------------------------------------------------------------
-| Module Name
-|--------------------------------------------------------------------------
-| The default name in database table used as a system id migrations.
-|
-*/
-$config['migration_module_name'] = 'ci_system';
