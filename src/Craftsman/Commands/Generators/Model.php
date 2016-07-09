@@ -13,7 +13,7 @@ use Craftsman\Classes\Generator;
  */
 class Model extends Generator implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'generator:model';
+	protected $name        = 'generate:model';
 	protected $description = 'Generate a Model';
 
 	public function start()

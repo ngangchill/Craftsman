@@ -2,6 +2,7 @@
 namespace Craftsman\Commands\Migrations;
 
 use Craftsman\Classes\Migration;
+use Symfony\Component\Console\Helper\TableSeparator;
 
 /**
  * Migration\Info Command
@@ -13,7 +14,7 @@ use Craftsman\Classes\Migration;
  */
 class Info extends Migration implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'migration:info';
+	protected $name        = 'migrate:check';
 	protected $description = 'Display the current migration scheme status';
 	protected $harmless    = TRUE;
 
@@ -27,9 +28,11 @@ class Info extends Migration implements \Craftsman\Interfaces\Command
 			array('Migration','Value'),
 			array(
 				array('Name', $this->migration->get_module_name()),
-				array('Actual version', $db_version),
-				array('File version', $latest_version),
+				array('Type', $this->migration->get_type()),
 				array('Path',$this->migration->get_module_path()),
+				new TableSeparator(),
+				array('Actual version', $db_version),
+				array('Latest version', $latest_version),
 			)
 		);
 
@@ -40,8 +43,8 @@ class Info extends Migration implements \Craftsman\Interfaces\Command
 		elseif ($latest_version > $db_version) 
 		{
 			$this->note(
-				'The Database is not up-to-date with the latest changes,'
-				.'run <info>migration:latest</info> to update them.'
+				'The Database is not up-to-date with the latest changes, '
+				."run 'migrate:latest' to update them."
 			);
 		}
 		else

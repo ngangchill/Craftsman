@@ -13,7 +13,7 @@ use Craftsman\Classes\Generator;
 */
 class Migration extends Generator implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'generator:migration';
+	protected $name        = 'generate:migration';
 	protected $description = 'Generate a Migration';
 	
 	public function start()

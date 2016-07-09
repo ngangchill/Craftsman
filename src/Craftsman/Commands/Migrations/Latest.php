@@ -13,14 +13,14 @@ use Craftsman\Classes\Migration;
  */
 class Latest extends Migration implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'migration:latest';
+	protected $name        = 'migrate:latest';
 	protected $description = 'Run the latest migration';
 
 	public function start()
 	{
 		$migrations = $this->migration->find_migrations();
 		$version    = $this->migration->get_latest_version($migrations);
-		$db_version = intval($this->migration->get_db_version());			 
+		$db_version = intval($this->migration->get_db_version());
 
 		if($version == $db_version)
 		{
@@ -29,9 +29,8 @@ class Latest extends Migration implements \Craftsman\Interfaces\Command
 		elseif ($version > $db_version) 
 		{
 			$this->text(
-				'Migrating database <info>UP</info> to version' 
-				.'<comment>'.$version.'</comment> from '
-				.'<comment>'.$db_version.'</comment>'
+				'Migrating database <info>UP</info> to version ' 
+				.'<comment>'.$version.'</comment> from <comment>'.$db_version.'</comment>'
 			);
 			$case = 'migrating';
 			$signal = '++';
@@ -39,9 +38,8 @@ class Latest extends Migration implements \Craftsman\Interfaces\Command
 		else
 		{
 			$this->text(
-				'Migrating database <info>DOWN</info> to version'
-				.'<comment>'.$version.'</comment> from '
-				.'<comment>'.$db_version.'</comment>'
+				'Migrating database <info>DOWN</info> to version '
+				.'<comment>'.$version.'</comment> from <comment>'.$db_version.'</comment>'
 			);
 			$case = 'reverting';
 			$signal = '--';

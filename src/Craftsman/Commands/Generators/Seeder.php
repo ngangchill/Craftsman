@@ -13,7 +13,7 @@ use Craftsman\Classes\Generator;
  */
 class Seeder extends Generator implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'generator:seeder';
+	protected $name        = 'generate:seeder';
 	protected $description = 'Generate a Seeder';
 
 	public function start()

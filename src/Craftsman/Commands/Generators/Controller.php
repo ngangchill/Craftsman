@@ -13,7 +13,7 @@ use Craftsman\Classes\Generator;
  */
 class Controller extends Generator implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'generator:controller';
+	protected $name        = 'generate:controller';
 	protected $description = 'Generate a Controller';
 
 	public function start()

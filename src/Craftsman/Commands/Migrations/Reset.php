@@ -13,7 +13,7 @@ use Craftsman\Classes\Migration;
  */
 class Reset extends Migration implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'migration:reset';
+	protected $name        = 'migrate:reset';
 	protected $description = 'Rollback all migrations';
 
 	public function start()
@@ -22,8 +22,8 @@ class Reset extends Migration implements \Craftsman\Interfaces\Command
 		$db_version = intval($this->migration->get_db_version());
 		$version    = 0;
 
-		$this->text('Migrating database <info>DOWN</info> to version <comment>'.$version.
-			'</comment> from <comment>'.$db_version.'</comment>');
+		$this->text('Migrating database <info>DOWN</info> to version '
+			.'<comment>'.$version.'</comment> from <comment>'.$db_version.'</comment>');
 		$case = 'reverting';
 		$signal = '--';
 

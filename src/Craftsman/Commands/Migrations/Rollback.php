@@ -13,38 +13,32 @@ use Craftsman\Classes\Migration;
  */
 class Rollback extends Migration implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'migration:rollback';
+	protected $name        = 'migrate:rollback';
 	protected $description = 'Rollback from the last migration';
 
 	public function start()
 	{
 		$migrations = $this->migration->find_migrations();
 		$versions   = array_map('intval', array_keys($migrations));
-
 		$db_version = intval($this->migration->get_db_version());
 
 		end($versions);
 		
 		while ($version = prev($versions)) 
 		{
-			if ($version == ($db_version - 1)) 
-			{
-				break;
-			}
+			if ($version !== $db_version) { break; }
 		}
 
-		if($version < 0)
+		if(($version + $db_version) <= 0)
 		{
 			return $this->note("Can't rollback anymore");
 		}
 		else
 		{
-			if ($version == $db_version) 
-			{
-				$version = 0;
-			}
-			$this->text('Migrating database <info>DOWN</info> to version <comment>'.$version.
-				'</comment> from <comment>'.$db_version.'</comment>');
+			$version === FALSE && $version = 0;
+
+			$this->text('Migrating database <info>DOWN</info> to version '
+				.'<comment>'.$version.'</comment> from <comment>'.$db_version.'</comment>');
 			$case = 'reverting';
 			$signal = '--';
 		}

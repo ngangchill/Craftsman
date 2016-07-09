@@ -13,7 +13,7 @@ use Craftsman\Classes\Migration;
  */
 class Refresh extends Migration implements \Craftsman\Interfaces\Command
 {
-	protected $name        = 'migration:refresh';
+	protected $name        = 'migrate:refresh';
 	protected $description = 'Rollback all migrations and run them all again';
 
 	public function start()
@@ -28,15 +28,15 @@ class Refresh extends Migration implements \Craftsman\Interfaces\Command
 		$this->newLine();
 		$this->text('<info>'.$signal.'</info> '.$case);		
 		
-		$this->text('Migrating database <info>DOWN</info> to version <comment>'.$version.
-			'</comment> from <comment>'.$db_version.'</comment>');
+		$this->text('Migrating database <info>DOWN</info> to version '
+			.'<comment>'.$version.'</comment> from <comment>'.$db_version.'</comment>');
 
 		$time_start = microtime(true);
 
 		$this->migration->version($version);
 
-		$this->text('Migrating database <info>UP</info> to version <comment>LATEST'
-			.'</comment> from <comment>'.$db_version.'</comment>');
+		$this->text('Migrating database <info>UP</info> to version '
+			.'<comment>LATEST</comment> from <comment>'.$db_version.'</comment>');
 		$case = 'migrating';
 		$signal = '++';	
 
