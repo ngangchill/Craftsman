@@ -17,7 +17,7 @@ github:
   licence: MIT # repository licence name
 twitter:
   username: itsdsv
-  hashtags: 'CLI, Codeigniter, Symfony Console Component' # without symbols
+  hashtags: 'CLI, Codeigniter, SymfonyConsoleComponent' # without symbols
 
 # Build settings
 markdown: kramdown
